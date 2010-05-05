@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title></title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+    <link href='/sass/stylesheet' rel='stylesheet' type='text/css' />
+    <link href='/sass/factory' rel='stylesheet' type='text/css' />
+    <script src='/js/jquery.js' type='text/javascript'></script>
+    <script src='/js/jquery-ui.js' type='text/javascript'></script>
+    <script src='/js/application.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <%= flash[:notice] %>
+    <div class='clear'></div>
+    <div id='container'>
+      <p>
+        LAYOUT BABY
+      </p>
+      <a class='float_left' href='/factory'>Factory</a>
+      <div class='clear'></div>
+      <%= yield %>
+      <div class='clear'></div>
+    </div>
+  </body>
+</html>

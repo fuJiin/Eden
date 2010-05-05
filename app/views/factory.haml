@@ -1,0 +1,19 @@
+#edit_panel.float_left
+
+  %form{:method => :post}
+    Page name:
+    .clear
+    %input{:name => 'page_name', :type => 'text'}
+    .clear
+    %input{:name => 'page_html', :type => 'text', :id => 'page_html'}
+    %input{:type => 'submit', :value => 'make!'}
+    
+  %label
+    Elements:
+  #div.element
+    ="div"
+#page_content.float_left
+  #content_container
+#staging_area.bordered
+
+  
