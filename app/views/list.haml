@@ -1,0 +1,6 @@
+%ul
+  Your pages:
+  -@pages.each do |page|
+    %li
+      %a{:href => "/factory/#{page}"}
+        =page

@@ -50,14 +50,34 @@ post '/factory' do
 	redirect "/factory"
 end
 
-# -------------------------------- #
+# ------- Factory pages --------- #
 
-get '/:page' do
-  page = "#{params[:page]}".to_sym
-  if File.exists?("#{settings.views}/#{page}.haml")
-    haml page
-  else
-   erb page
- end
+get '/list' do
+  @pages = []
+  pages = Dir.open("#{settings.views}/factory").each do |page|
+     unless page == "." || page == ".." || page == ".DS_Store" || page == "layout.erb"
+      name = File.basename(page, '.erb')
+     @pages << name
+    end
+  end
+     
+  haml :list
 end
+
+get '/factory/:page' do
+  page = "/factory/#{params[:page]}".to_sym
+  erb page, :layout => :"factory/layout"
+end
+
+# get '/:page' do
+#   page = "#{params[:page]}".to_sym
+#   if File.exists?("#{settings.views}/#{page}.haml")
+#     haml page
+#   else
+#    erb page
+#  end
+# end
+
+
+
 
