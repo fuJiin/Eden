@@ -2,7 +2,6 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'rack-flash'
-require 'custom_logger'
 
 set :app_file, __FILE__
 set :public, File.expand_path('public/')
