@@ -27,6 +27,8 @@ class Page
   include MongoMapper::Document
   key :content, String
   key :name, String
+
+  validates_uniqueness_of :name
 end
 
 set :app_file, __FILE__
@@ -52,7 +54,7 @@ post '/' do
   page_name = params[:page_name].gsub(/ /, "-")
   page = File.open(File.expand_path('..') + "/views/#{page_name}.haml", "a")
   page << "\n#{params[:page_content]}"
-  
+
   flash[:notice] = "page succesfully created"
   redirect "/"
 end
@@ -64,11 +66,11 @@ get '/factory' do
 end
 
 post '/factory' do
-	if params[:page_name]
-	  page = Page.create(:name => params[:page_name], :content => params[:page_html])
-  	flash[:notice] = "Page created"
+  if params[:page_name]
+    page = Page.create(:name => params[:page_name], :content => params[:page_html])
+    flash[:notice] = "Page created"
   end
-	redirect "/factory"
+  redirect "/factory"
 end
 
 # ------- Factory pages --------- #
@@ -79,7 +81,7 @@ get '/list' do
 end
 
 get '/factory/:page' do
-  page = Page.find(:name => %w{params[:page]})
+  page = Page.first(:name => params[:page])
   @content = page.content
   haml :page
 end
