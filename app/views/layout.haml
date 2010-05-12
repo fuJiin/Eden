@@ -15,7 +15,9 @@
     #container
       %p
         LAYOUT BABY
-      %a{:href => "/factory", :class => "float_left"} Factory
+      %a{:href => '/', :class => 'float_left'} Home
+      %a{:href => "/factory", :class => "float_left spaced"} Factory
+      %a{:href => "/list", :class => "float_left spaced"} List
       .clear
       
       = yield

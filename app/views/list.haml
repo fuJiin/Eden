@@ -1,6 +1,10 @@
 %ul
   Your pages:
+  .clear
   -@pages.each do |page|
     %li
-      %a{:href => "/factory/#{page.name}"}
+      %a{:href => "/factory/#{page.name}", :class => 'float_left'}
         =page.name
+      %a{:href => "/factory/#{page.name}", :method => :delete, :class => 'float_left spaced'}
+        =page.name
+    

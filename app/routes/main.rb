@@ -50,15 +50,6 @@ get '/' do
   haml :index
 end
 
-post '/' do
-  page_name = params[:page_name].gsub(/ /, "-")
-  page = File.open(File.expand_path('..') + "/views/#{page_name}.haml", "a")
-  page << "\n#{params[:page_content]}"
-
-  flash[:notice] = "page succesfully created"
-  redirect "/"
-end
-
 # ------- page generator -------- #
 
 get '/factory' do
@@ -78,6 +69,14 @@ end
 get '/list' do
   @pages = Page.all
   haml :list
+end
+
+delete '/factory/:page' do
+  page = Page.first(:name => params[:page])
+  if page.destroy
+    flash[:notice] = 'Page removed'
+    redirect "/list"
+  end
 end
 
 get '/factory/:page' do
