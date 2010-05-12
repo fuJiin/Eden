@@ -20,9 +20,9 @@ db = conn.db(uri.path.gsub(/^\//, ''))
 # ---------------- #
 
 class Page
-  # include MongoMapper::Document
-  # key :content, Text
-  # key :name, String
+  include MongoMapper::Document
+  key :content, Text
+  key :name, String
 end
 
 set :app_file, __FILE__
