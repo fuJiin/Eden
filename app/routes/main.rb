@@ -14,10 +14,12 @@ require 'uri'
 #   MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
 # end
 
-uri = URI.parse(ENV['MONGOHQ_URL'])
-conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
-db = conn.db(uri.path.gsub(/^\//, ''))
-MongoMapper.database = db
+# uri = URI.parse(ENV['MONGOHQ_URL'])
+# conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
+# db = conn.db(uri.path.gsub(/^\//, ''))
+MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
+MongoMapper.connect(RACK_ENV)
+
 # ---------------- #
 
 class Page
