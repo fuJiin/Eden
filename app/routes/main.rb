@@ -71,7 +71,7 @@ get '/list' do
   haml :list
 end
 
-delete '/factory/:page' do
+get '/factory/:page/delete' do
   page = Page.first(:name => params[:page])
   if page.destroy
     flash[:notice] = 'Page removed'
