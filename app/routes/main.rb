@@ -6,14 +6,14 @@ require 'mongo'
 require 'mongo_mapper'
 require 'custom_logger'
 
-# mapping database #
+mapping database #
 if ENV['MONGOHQ_URL']
   MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
 else
   MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
 end
 
-MongoMapper.connect(GENESIS_ENV)
+MongoMapper.connect(RACK_ENV)
 # ---------------- #
 
 class Page
@@ -21,8 +21,6 @@ class Page
   key :content, Text
   key :name, String
 end
-
-
 
 set :app_file, __FILE__
 set :public, File.expand_path('public/')
