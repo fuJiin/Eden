@@ -1,1 +1,3 @@
 rack-flash
+mongo
+mongo_mapper

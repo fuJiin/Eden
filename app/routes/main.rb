@@ -2,6 +2,26 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'rack-flash'
+require 'mongo'
+require 'mongo_mapper'
+
+# mapping database #
+if ENV['MONGOHQ_URL']
+  MongoMapper.config = {GENESIS_ENV => {'uri' => ENV['MONGOHQ_URL']}}
+else
+  MongoMapper.config = {GENESIS_ENV => {'uri' => 'mongodb://localhost/sushi'}}
+end
+
+MongoMapper.connect(GENESIS_ENV)
+# ---------------- #
+
+class Page
+  include MongoMapper::Document
+  key :content, Text
+  key :name, String
+end
+
+
 
 set :app_file, __FILE__
 set :public, File.expand_path('public/')
@@ -39,33 +59,23 @@ end
 
 post '/factory' do
 	if params[:page_name]
-		page_name = params[:page_name].gsub(/ /, "-")
-		page_content = params[:page_html]
-		page = File.open("#{settings.views}/#{page_name}.erb", "w")
-		page << page_content.to_s
-		page.sync = true
-	end
-	flash[:notice] = "Page created"
+	  page = Page.create(:name => params[:page_name], :content => params[:page_html])
+  	flash[:notice] = "Page created"
+  end
 	redirect "/factory"
 end
 
 # ------- Factory pages --------- #
 
 get '/list' do
-  @pages = []
-  pages = Dir.open("#{settings.views}/factory").each do |page|
-     unless page == "." || page == ".." || page == ".DS_Store" || page == "layout.erb"
-      name = File.basename(page, '.erb')
-     @pages << name
-    end
-  end
-     
+  @pages = Page.all
   haml :list
 end
 
 get '/factory/:page' do
-  page = "/factory/#{params[:page]}".to_sym
-  erb page, :layout => :"factory/layout"
+  page = Page.find(:name => params[:name])
+  @content = page.content
+  haml :page
 end
 
 # get '/:page' do
