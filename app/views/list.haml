@@ -2,10 +2,10 @@
   Your pages:
   .clear
   -@pages.each do |page|
-    %li
-      %a{:href => "/factory/#{page.name}", :class => 'float_left spaced'}
+    %li{:class => 'float_left spaced'}
+      %a{:href => "/factory/#{page.name}"}
         =page.name
-    %li
-      %a{:href => "/factory/#{page.name}/delete", :class => 'float_left spaced'}
+    %li{:class => 'float_left spaced'}
+      %a{:href => "/factory/#{page.name}/delete"}
         remove
     
