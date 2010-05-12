@@ -3,8 +3,9 @@
   .clear
   -@pages.each do |page|
     %li
-      %a{:href => "/factory/#{page.name}", :class => 'float_left'}
+      %a{:href => "/factory/#{page.name}", :class => 'float_left spaced'}
         =page.name
+    %li
       %a{:href => "/factory/#{page.name}/delete", :class => 'float_left spaced'}
-        =page.name
+        =remove
     
