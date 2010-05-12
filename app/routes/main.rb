@@ -5,15 +5,18 @@ require 'rack-flash'
 require 'mongo'
 require 'mongo_mapper'
 require 'custom_logger'
+require 'uri'
 
 mapping database #
-if ENV['MONGOHQ_URL']
-  MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
-else
-  MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
-end
+# if ENV['MONGOHQ_URL']
+#   MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
+# else
+#   MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
+# end
 
-MongoMapper.connect(RACK_ENV)
+uri = URI.parse(ENV['MONGOHQ_URL'])
+conn = MongoMapper::Connection.from_uri(ENV)
+db = conn.db(uri.path.gsub(/^\//, ''))
 # ---------------- #
 
 class Page
