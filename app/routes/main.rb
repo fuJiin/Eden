@@ -79,7 +79,7 @@ get '/list' do
 end
 
 get '/factory/:page' do
-  page = Page.find(:name => params[:name])
+  page = Page.find(:name => %w{params[:page]})
   @content = page.content
   haml :page
 end
