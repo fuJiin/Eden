@@ -7,7 +7,7 @@ require 'mongo_mapper'
 require 'custom_logger'
 require 'uri'
 
-mapping database #
+# mapping database #
 # if ENV['MONGOHQ_URL']
 #   MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
 # else
