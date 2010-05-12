@@ -21,7 +21,7 @@ db = conn.db(uri.path.gsub(/^\//, ''))
 
 class Page
   include MongoMapper::Document
-  key :content, Text
+  key :content, String
   key :name, String
 end
 
