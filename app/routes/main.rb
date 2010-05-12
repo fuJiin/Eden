@@ -14,15 +14,15 @@ require 'uri'
 #   MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
 # end
 
-uri = URI.parse(ENV['MONGOHQ_URL'])
-conn = MongoMapper::Connection.from_uri(ENV['MONGOHQ_URL'])
-db = conn.db(uri.path.gsub(/^\//, ''))
+# uri = URI.parse(ENV['MONGOHQ_URL'])
+# conn = MongoMapper::Connection.from_uri(ENV['MONGOHQ_URL'])
+# db = conn.db(uri.path.gsub(/^\//, ''))
 # ---------------- #
 
 class Page
-  include MongoMapper::Document
-  key :content, Text
-  key :name, String
+  # include MongoMapper::Document
+  # key :content, Text
+  # key :name, String
 end
 
 set :app_file, __FILE__
@@ -41,7 +41,6 @@ end
 
 # ------- site routes ----------- #
 get '/' do
-  CustomLogger.puts(ENV.inspect)
   haml :index
 end
 
