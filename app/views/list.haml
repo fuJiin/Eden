@@ -2,5 +2,5 @@
   Your pages:
   -@pages.each do |page|
     %li
-      %a{:href => "/factory/#{page}"}
-        =page
+      %a{:href => "/factory/#{page.name}"}
+        =page.name
