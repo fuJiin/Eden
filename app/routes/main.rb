@@ -18,7 +18,7 @@ require 'uri'
 # conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
 # db = conn.db(uri.path.gsub(/^\//, ''))
 TESTING = {'uri' => ENV['MONGOHQ_URL']}
-MongoMapper.config(TESTING)
+MongoMapper.config = TESTING
 MongoMapper.connect(TESTING)
 
 # ---------------- #
