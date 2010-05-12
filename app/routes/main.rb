@@ -17,10 +17,14 @@ require 'uri'
 # uri = URI.parse(ENV['MONGOHQ_URL'])
 # conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
 # db = conn.db(uri.path.gsub(/^\//, ''))
+case ENV['RACK_ENV']
+when "production"
 test = {:stuff => {'uri' => ENV['MONGOHQ_URL']}}
 MongoMapper.config = test
 MongoMapper.connect(:stuff)
-
+when "development"
+MongoMapper.database = "mydb"
+end
 # ---------------- #
 
 class Page
