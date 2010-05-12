@@ -4,12 +4,13 @@ require 'haml'
 require 'rack-flash'
 require 'mongo'
 require 'mongo_mapper'
+require 'custom_logger'
 
 # mapping database #
 if ENV['MONGOHQ_URL']
-  MongoMapper.config = {GENESIS_ENV => {'uri' => ENV['MONGOHQ_URL']}}
+  MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
 else
-  MongoMapper.config = {GENESIS_ENV => {'uri' => 'mongodb://localhost/sushi'}}
+  MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
 end
 
 MongoMapper.connect(GENESIS_ENV)
@@ -39,6 +40,7 @@ end
 
 # ------- site routes ----------- #
 get '/' do
+  CustomLogger.puts(ENV.inspect)
   haml :index
 end
 
@@ -77,16 +79,3 @@ get '/factory/:page' do
   @content = page.content
   haml :page
 end
-
-# get '/:page' do
-#   page = "#{params[:page]}".to_sym
-#   if File.exists?("#{settings.views}/#{page}.haml")
-#     haml page
-#   else
-#    erb page
-#  end
-# end
-
-
-
-
