@@ -19,11 +19,11 @@ require 'uri'
 # db = conn.db(uri.path.gsub(/^\//, ''))
 case ENV['RACK_ENV']
 when "production"
-test = {:stuff => {'uri' => ENV['MONGOHQ_URL']}}
-MongoMapper.config = test
-MongoMapper.connect(:stuff)
+  test = {:stuff => {'uri' => ENV['MONGOHQ_URL']}}
+  MongoMapper.config = test
+  MongoMapper.connect(:stuff)
 when "development"
-MongoMapper.database = "mydb"
+  MongoMapper.database = "mydb"
 end
 # ---------------- #
 
@@ -33,6 +33,7 @@ class Page
   key :name, String
 
   validates_uniqueness_of :name
+  validates_presence_of :name
 end
 
 set :app_file, __FILE__
@@ -61,9 +62,11 @@ get '/factory' do
 end
 
 post '/factory' do
-  if params[:page_name]
-    page = Page.create(:name => params[:page_name], :content => params[:page_html])
+  if params[:page_name] && !params[:page_name].empty?
+    page = Page.create(:name => params[:page_name].gsub(/ /,"_"), :content => params[:page_html])
     flash[:notice] = "Page created"
+  else
+    flash[:notice] = "Error page not created"
   end
   redirect "/factory"
 end
@@ -76,7 +79,7 @@ get '/list' do
 end
 
 get '/factory/:page/delete' do
-  page = Page.first(:name => params[:page])
+  page = Page.first(:name => params[:page].gsub(/ /,"_"))
   if page.destroy
     flash[:notice] = 'Page removed'
     redirect "/list"
@@ -84,7 +87,7 @@ get '/factory/:page/delete' do
 end
 
 get '/factory/:page' do
-  page = Page.first(:name => params[:page])
+  page = Page.first(:name => params[:page].gsub(/ /,"_"))
   @content = page.content
   haml :page
 end
