@@ -8,20 +8,11 @@ require 'custom_logger'
 require 'uri'
 
 # mapping database #
-# if ENV['MONGOHQ_URL']
-#   MongoMapper.config = {RACK_ENV => {'uri' => ENV['MONGOHQ_URL']}}
-# else
-#   MongoMapper.config = {RACK_ENV => {'uri' => 'mongodb://localhost/sushi'}}
-# end
-
-# uri = URI.parse(ENV['MONGOHQ_URL'])
-# conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
-# db = conn.db(uri.path.gsub(/^\//, ''))
 case ENV['RACK_ENV']
 when "production"
-  test = {:stuff => {'uri' => ENV['MONGOHQ_URL']}}
-  MongoMapper.config = test
-  MongoMapper.connect(:stuff)
+  conf = {:db => {'uri' => ENV['MONGOHQ_URL']}}
+  MongoMapper.config = conf
+  MongoMapper.connect(:db)
 when "development"
   MongoMapper.database = "mydb"
 end
