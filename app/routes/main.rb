@@ -6,6 +6,9 @@ require 'mongo'
 require 'mongo_mapper'
 require 'custom_logger'
 require 'uri'
+require 'joint'
+
+# require 'rack/gridfs'
 
 # mapping database #
 case ENV['RACK_ENV']
@@ -16,7 +19,10 @@ when "production"
 when "development"
   MongoMapper.database = "mydb"
 end
-# ---------------- #
+
+GRID = Mongo::Grid.new(MongoMapper.database)
+# use Rack::GridFS, :hostname => 'localhost.local', :port => 27017, :database => "mydb"
+#---------------- #
 
 class Page
   include MongoMapper::Document
@@ -25,7 +31,20 @@ class Page
 
   validates_uniqueness_of :name
   validates_presence_of :name
+  
+  many :pictures
 end
+
+class Picture
+  include MongoMapper::Document
+  plugin Joint
+  
+  attachment :image
+  # include Grip::HasAttachment
+  # has_grid_attachment :image
+end
+
+# ------------------- #
 
 set :app_file, __FILE__
 set :public, File.expand_path('public/')
@@ -33,6 +52,8 @@ set :views, File.expand_path('app/views/')
 
 enable :sessions
 use Rack::Flash
+
+
 
 # ------- stylesheets ----------- #
 get '/sass/:stylesheet' do 
@@ -81,4 +102,24 @@ get '/factory/:page' do
   page = Page.first(:name => params[:page].gsub(/ /,"_"))
   @content = page.content
   haml :page
+end
+
+get '/upload' do 
+  @pictures = Picture.all
+  haml :upload
+end
+
+post '/upload' do
+  # @image = Image.create(params[:picture])
+  @picture = Picture.create(:image => params[:image][:tempfile])
+  # @picture.file = params[:picture]
+  # @picture.save
+  haml :upload_post
+end
+
+get '/picture/:id' do
+  content_type 'image/jpeg'
+  @picture = Picture.find(params[:id])
+  @image = GRID.get(@picture.image_id)
+  @image.read
 end

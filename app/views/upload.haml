@@ -1,0 +1,8 @@
+-@pictures.each do |p|
+  -unless p.image_id.blank?
+    =p.inspect
+    .clear
+
+%form{:id => 'upload', :action => '/upload', :enctype => 'multipart/form-data', :method => 'post', :name => 'upload'}
+  %input{:name => 'image', :type => 'file', :id => 'picture'}
+  %input{:id => 'picture_submit', :type => 'submit', :value => 'upload', :name => 'commit'}
