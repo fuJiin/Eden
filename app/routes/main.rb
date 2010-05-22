@@ -21,7 +21,6 @@ when "development"
 end
 
 GRID = Mongo::Grid.new(MongoMapper.database)
-# use Rack::GridFS, :hostname => 'localhost.local', :port => 27017, :database => "mydb"
 #---------------- #
 
 class Page
@@ -40,8 +39,10 @@ class Picture
   plugin Joint
   
   attachment :image
-  # include Grip::HasAttachment
-  # has_grid_attachment :image
+  
+  def show
+    return GRID.get(self.image_id).read
+  end
 end
 
 # ------------------- #
@@ -70,6 +71,7 @@ end
 # ------- page generator -------- #
 
 get '/factory' do
+  @pictures = Picture.all
   haml :factory
 end
 
@@ -115,6 +117,16 @@ post '/upload' do
   # @picture.file = params[:picture]
   # @picture.save
   haml :upload_post
+end
+
+get '/upload/delete' do
+  pictures = Picture.all
+  pictures.each do |p|
+    GRID.delete(p.image_id)
+    p.destroy
+  end
+  flash[:notice] = "Pictures removed"
+  redirect '/'
 end
 
 get '/picture/:id' do

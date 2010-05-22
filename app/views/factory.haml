@@ -12,6 +12,9 @@
     Elements:
   #div.element
     ="div"
+  -@pictures.each do |p|
+    %img{:src => "/picture/#{p.id}", :class => 'element'}
+  
 #page_content.float_left
   #content_container
 #staging_area.bordered

@@ -3,14 +3,21 @@ $(document).ready(
 		
 		$(".interactive").live("mouseover",
 		function(){
-			$(this)
-			.resizable({
-				handle: 'se'
-			})
-			.draggable({
-				containment: 'parent'
-			});
-		}
+
+			if (this.tagName == 'IMG'){
+				var container = $(this).parent();
+			} else {
+				var container = $(this);
+			}
+			
+			container.draggable({
+					containment: 'parent',
+				})
+			
+			$(this).resizable({
+					handles: 'se'
+				});
+			}
 		)
 		
 		$(".element").live("click",
@@ -32,10 +39,15 @@ $(document).ready(
 )
 
 function addElementToContents(item, content) {
-	var element = item.attr("id");
 	var text = item.html();
-	content.append("<" + element + " class='new_item interactive bordered'>" + "</" + element + ">");
-	$(".new_item").html(text);
-	$(".new_item").height(40).width(40);
+	var clone = item.clone();
+	var height = item.height();
+	var width = item.width();
+	
+	clone.addClass('new_item bordered interactive')
+		.removeClass('element')
+		.appendTo(content);
+		
+	$(".new_item").height(height).width(width);
 	$(".new_item").removeClass("new_item");
 }
