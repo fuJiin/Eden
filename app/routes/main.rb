@@ -57,8 +57,8 @@ use Rack::Flash
 
 
 # ------- stylesheets ----------- #
-get '/sass/:stylesheet' do 
-  route = "../../public/sass/#{params[:stylesheet]}".to_sym
+get %r{/stylesheets/(.+).sass} do 
+  route = "../../public/sass/#{params[:captures].first}".to_sym
   content_type 'text/css', :charset => 'utf-8'
   sass route
 end
