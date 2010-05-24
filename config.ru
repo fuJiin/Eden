@@ -1,3 +1,3 @@
-require './app/routes/main.rb'
+require 'eden'
 
 run Sinatra::Application
